@@ -1,0 +1,284 @@
+{
+	"compiler": {
+		"version": "0.4.26+commit.4563c3fc"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "itemFactory",
+				"outputs": [
+					{
+						"name": "",
+						"type": "address"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"name": "_tokenId",
+						"type": "uint256"
+					},
+					{
+						"name": "_price",
+						"type": "uint256"
+					}
+				],
+				"name": "buyCard",
+				"outputs": [
+					{
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [],
+				"name": "renounceOwnership",
+				"outputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [
+					{
+						"name": "_tokenId",
+						"type": "uint256"
+					}
+				],
+				"name": "getOwnerOfToken",
+				"outputs": [
+					{
+						"name": "",
+						"type": "address"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "owner",
+				"outputs": [
+					{
+						"name": "",
+						"type": "address"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"name": "_tokenAddr",
+						"type": "address"
+					}
+				],
+				"name": "setCardTokenAddr",
+				"outputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"name": "_cardAddr",
+						"type": "address"
+					}
+				],
+				"name": "setCardFactoryAddr",
+				"outputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "gameToken",
+				"outputs": [
+					{
+						"name": "",
+						"type": "address"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "transferOwnership",
+				"outputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"name": "_itemFactory",
+						"type": "address"
+					},
+					{
+						"name": "_token",
+						"type": "address"
+					}
+				],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"name": "_purchaser",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"name": "_prevOwner",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"name": "tokenId",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"name": "_price",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"name": "_date",
+						"type": "uint32"
+					}
+				],
+				"name": "BuyCard",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"name": "previousOwner",
+						"type": "address"
+					}
+				],
+				"name": "OwnershipRenounced",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"name": "previousOwner",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "OwnershipTransferred",
+				"type": "event"
+			}
+		],
+		"devdoc": {
+			"methods": {}
+		},
+		"userdoc": {
+			"methods": {}
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/ItemTrading.sol": "ItemTrading"
+		},
+		"evmVersion": "byzantium",
+		"libraries": {},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/ERC721.sol": {
+			"keccak256": "0x0bf066a04d293ca496ad7ad4f4f8346aeb16970dc3b9e7aedef280696a41e83d",
+			"urls": [
+				"bzzr://e092ab0478ccdc1dd74f61f48f4d5ab522a11a2b79223be52800c6a507641b9e"
+			]
+		},
+		"contracts/ItemFactory.sol": {
+			"keccak256": "0xa0db0cb310be3064710e2476da0f577c6df263e1e0a9c303f174c08622d15f8c",
+			"urls": [
+				"bzzr://0054076730bb3cb5b073ab2acb33ce7c3897a72138e61f92f22aa03e2804b928"
+			]
+		},
+		"contracts/ItemTrading.sol": {
+			"keccak256": "0xaf2c1b3d4376fa9b53ea6268b917122854f5b3854eedbfd8ae81ff5647b0a451",
+			"urls": [
+				"bzzr://cff7d9e6da6ef540313ad51192b3fd4363d63af153fca757189a7173f610f14c"
+			]
+		},
+		"contracts/Ownable.sol": {
+			"keccak256": "0x3ffafb8a6b715d52951d91423f2da7e634991a7e863322236d35f556dcff1e10",
+			"urls": [
+				"bzzr://40382f33b395d105ba2526573c5578e2a371a01f03b01bcbb9bababc7684084e"
+			]
+		},
+		"contracts/SafeMath.sol": {
+			"keccak256": "0x8735c3f2909256dc19d5c96029c92a110e894044e72eb99a0542cc0e5154fa0d",
+			"urls": [
+				"bzzr://b753fd422e391d47447a2a02523e533a6da63bfba759a23322538f216d6c4a1f"
+			]
+		},
+		"contracts/Token.sol": {
+			"keccak256": "0x46d0a35dbb392ef2376ba16d5d1a43c223cd93293b0c75d5107e93cf88d2e311",
+			"urls": [
+				"bzzr://7cc27aba23b153acfb86f4b4981de5518fa4d5bce6df4ca6c0b3cb3cc873ee07"
+			]
+		},
+		"contracts/lib/strings.sol": {
+			"keccak256": "0xacdc6da263f19cecdf59ba3a4f376e4d644a049a0398d4d47cbaede57e3c6c73",
+			"urls": [
+				"bzzr://0b89cabb0261750c4422de0b37171c15fd916876b6c54869fbb05a0fe036b735"
+			]
+		}
+	},
+	"version": 1
+}

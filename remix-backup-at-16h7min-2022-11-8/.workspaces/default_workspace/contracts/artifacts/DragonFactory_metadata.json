@@ -1,0 +1,234 @@
+{
+	"compiler": {
+		"version": "0.4.26+commit.4563c3fc"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"constant": false,
+				"inputs": [],
+				"name": "renounceOwnership",
+				"outputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "getBornedDragons",
+				"outputs": [
+					{
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "owner",
+				"outputs": [
+					{
+						"name": "",
+						"type": "address"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [],
+				"name": "dragonAlive",
+				"outputs": [
+					{
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": true,
+				"inputs": [
+					{
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "dragons",
+				"outputs": [
+					{
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"name": "img",
+						"type": "uint256"
+					},
+					{
+						"name": "attack",
+						"type": "uint256"
+					},
+					{
+						"name": "life",
+						"type": "uint256"
+					},
+					{
+						"name": "remainLife",
+						"type": "uint256"
+					},
+					{
+						"name": "status",
+						"type": "uint8"
+					}
+				],
+				"payable": false,
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "transferOwnership",
+				"outputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"constant": false,
+				"inputs": [
+					{
+						"name": "_name",
+						"type": "string"
+					}
+				],
+				"name": "createRandomDragon",
+				"outputs": [],
+				"payable": false,
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"name": "id",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"indexed": false,
+						"name": "img",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"name": "attack",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"name": "defence",
+						"type": "uint256"
+					}
+				],
+				"name": "NewDragon",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"name": "previousOwner",
+						"type": "address"
+					}
+				],
+				"name": "OwnershipRenounced",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"name": "previousOwner",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "OwnershipTransferred",
+				"type": "event"
+			}
+		],
+		"devdoc": {
+			"methods": {}
+		},
+		"userdoc": {
+			"methods": {}
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/DragonFactory.sol": "DragonFactory"
+		},
+		"evmVersion": "byzantium",
+		"libraries": {},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/Battle.sol": {
+			"keccak256": "0x31388555b3727d20fcb2c095ed295f9552b1c3d1bee3422787bc588c52907fac",
+			"urls": [
+				"bzzr://f4a8c54472dd3bb582ad8579fa8b80d0ee688f471e81f7814a96d28a1e64aff6"
+			]
+		},
+		"contracts/DragonFactory.sol": {
+			"keccak256": "0x6f54a3b23fc38f39f8ce0c95622501854d2dedbe4893e472c9fa274f0dfa99d5",
+			"urls": [
+				"bzzr://62606460635467708d38bba963760cfdc36b460e9755018c45922feb34841e87"
+			]
+		},
+		"contracts/Ownable.sol": {
+			"keccak256": "0x3ffafb8a6b715d52951d91423f2da7e634991a7e863322236d35f556dcff1e10",
+			"urls": [
+				"bzzr://40382f33b395d105ba2526573c5578e2a371a01f03b01bcbb9bababc7684084e"
+			]
+		},
+		"contracts/SafeMath.sol": {
+			"keccak256": "0x8735c3f2909256dc19d5c96029c92a110e894044e72eb99a0542cc0e5154fa0d",
+			"urls": [
+				"bzzr://b753fd422e391d47447a2a02523e533a6da63bfba759a23322538f216d6c4a1f"
+			]
+		}
+	},
+	"version": 1
+}
