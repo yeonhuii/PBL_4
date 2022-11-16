@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>마이페이지</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+
+    <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bignumber.js/bignumber.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+
+    <script src="./static/libs/commonUtil.js"></script>
+
+    <script>
+        // 토큰, 아이템생성
+        const ItemTokenAddr = "0xd8b934580fcE35a11B58C6D73aDeE468a2833fa8";
+        const ITemFactoryAddr = "0xDA0bab807633f07f013f94DD0E6A4F96F8742B53";
+        const ITemFactoryABI =[
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_tokenId",
+                "type": "uint256"
+            }
+        ],
+        "name": "approve",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "_tokenId",
+                "type": "uint256"
+            }
+        ],
+        "name": "burn",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [],
+        "name": "createItem",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_tokenId",
+                "type": "uint256"
+            }
+        ],
+        "name": "safeTransferFrom",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_tokenId",
+                "type": "uint256"
+            },
+            {
+                "name": "_data",
+                "type": "bytes"
+            }
+        ],
+        "name": "safeTransferFrom",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_approved",
+                "type": "bool"
+            }
+        ],
+        "name": "setApprovalForAll",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "_tokenId",
+                "type": "uint256"
+            },
+            {
+                "name": "_price",
+                "type": "uint256"
+            }
+        ],
+        "name": "setItemSellingPrice",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "_tokenId",
+                "type": "uint256"
+            },
+            {
+                "name": "_status",
+                "type": "uint8"
+            }
+        ],
+        "name": "setItemSellingStatus",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "_itemTradingAddr",
+                "type": "address"
+            }
+        ],
+        "name": "setItemTradingAddr",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "_uri",
+                "type": "string"
+            }
+        ],
+        "name": "setTokenInfoURIBase",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            },
+            {
+                "name": "uri",
+                "type": "string"
+            }
+        ],
+        "name": "setTokenURI",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_tokenId",
+                "type": "uint256"
+            }
+        ],
+        "name": "transferFrom",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "_tokenName",
+                "type": "string"
+            },
+            {
+                "name": "_tokenSymbol",
+                "type": "string"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "name": "previousOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipRenounced",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "name": "previousOwner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "name": "_from",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "name": "_tokenId",
+                "type": "uint256"
+            }
+        ],
+        "name": "Transfer",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "name": "_approved",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "name": "_tokenId",
+                "type": "uint256"
+            }
+        ],
+        "name": "Approval",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "name": "_operator",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "name": "_approved",
+                "type": "bool"
+            }
+        ],
+        "name": "ApprovalForAll",
+        "type": "event"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "name": "_owner",
+                "type": "address"
+            }
+        ],
+        "name": "balanceOf",
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "name": "_tokenId",
+                "type": "uint256"
+            }
+        ],
+        "name": "exists",
+        "outputs": [
+            {
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "name": "_tokenId",
+                "type": "uint256"
+            }
+        ],
+        "name": "getApproved",
+        "outputs": [
+            {
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "name": "tokenId",
+                "type": "uint256"
+            }
+        ],
+        "name": "getItemSellingAvailable",
+        "outputs": [
+            {
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "InterfaceId_ERC165",
+        "outputs": [
+            {
+                "name": "",
+                "type": "bytes4"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "name": "_operator",
+                "type": "address"
+            }
+        ],
+        "name": "isApprovedForAll",
+        "outputs": [
+            {
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "itemExtInfo",
+        "outputs": [
+            {
+                "name": "status",
+                "type": "uint8"
+            },
+            {
+                "name": "itemSellingPrice",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "itemTradingAddr",
+        "outputs": [
+            {
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "name",
+        "outputs": [
+            {
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+            {
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "name": "_tokenId",
+                "type": "uint256"
+            }
+        ],
+        "name": "ownerOf",
+        "outputs": [
+            {
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "name": "_interfaceId",
+                "type": "bytes4"
+            }
+        ],
+        "name": "supportsInterface",
+        "outputs": [
+            {
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "symbol",
+        "outputs": [
+            {
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "name": "_index",
+                "type": "uint256"
+            }
+        ],
+        "name": "tokenByIndex",
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "name": "_owner",
+                "type": "address"
+            },
+            {
+                "name": "_index",
+                "type": "uint256"
+            }
+        ],
+        "name": "tokenOfOwnerByIndex",
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "name": "_tokenId",
+                "type": "uint256"
+            }
+        ],
+        "name": "tokenURI",
+        "outputs": [
+            {
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "totalSupply",
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "name": "v",
+                "type": "uint256"
+            }
+        ],
+        "name": "uintToString",
+        "outputs": [
+            {
+                "name": "str",
+                "type": "string"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    }
+];
+        const TokenABI =[
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "totalSupply",
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "name": "_owner",
+                "type": "address"
+            }
+        ],
+        "name": "balanceOf",
+        "outputs": [
+            {
+                "name": "balance",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "_to",
+                "type": "address"
+            },
+            {
+                "name": "_value",
+                "type": "uint256"
+            }
+        ],
+        "name": "transfer",
+        "outputs": [
+            {
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "name": "from",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "name": "value",
+                "type": "uint256"
+            }
+        ],
+        "name": "Transfer",
+        "type": "event"
+    }
+];
+
+        var account, ItemFactory, GameToken, Attack = 0, Defence = 0,
+            initObject = { // 장착Item Object 초기화
+                "Ring": ["반지", "#"],
+                "Helmet": ["투구", "#"],
+                "Hair": ["가발", "#"],
+                "Weapon": ["무기", "#"],
+                "Shield": ["방패", "#"],
+                "Cloak": ["망토", "#"],
+                "Boots": ["신발", "#"],
+                "Charm": ["부적", "#"]};
+
+        $(document).ready(function () {
+
+            //로그인 상태 체크
+            loginStatus().then((result) => {
+                if(result.status === "connected") {
+                    $("#nick_name").text(result.user.properties.nickname);
+                    $("#profileImg").attr("src", result.user.properties.thumbnail_image);
+                }else{
+                    window.location = "./login";
+                    return false;
+                }
+            });
+
+            //web3js 초기화
+            web3js = new Web3(window.web3.currentProvider);
+
+            // 컨트랙트 불러오기
+            ItemFactory = web3js.eth.contract(ITemFactoryABI).at(ITemFactoryAddr);
+            GameToken = web3js.eth.contract(TokenABI).at(ItemTokenAddr);
+
+            // 어카운트 정보 가져오기
+            web3js.eth.getAccounts(function (error, result) {
+                if (result.length) {
+                    console.log(result);
+                    account = result[0];
+                    $("#account").text(result[0]);
+
+                    // 이더 토큰 계좌 조회
+                    balanceOf();
+                    // Owner 아이템 보유 가져오기
+                    ownerOfItems();
+                    // 장착 Item Setting
+                    itemPositionSetup();
+                    // 트랜잭션 Low Gas 비용 가져오기
+                    getGasPrice().then((data) => { $("#gas_price").val(data) });
+                }
+            });
+        });
+
+        function balanceOf() {
+            web3js.eth.getBalance(account, function (error, result) {
+                if (errorChk("getBalance 호출 실패", error)) return;
+
+                var myEther = BigNumber(result);
+                if (myEther.isLessThan(1000000000000000))
+                    var etherMessage = " (경고 : 이더 부족으로 실행하지 못할 수도 있습니다.)"
+                else
+                    etherMessage = "";
+
+                $("#balanceOf").text(myEther.toFixed() + " wei" + etherMessage);
+            });
+            GameToken.balanceOf(account, function (error, result) {
+                if (errorChk("Token balanceOf 호출 실패", error)) return;
+
+                var gameToken = BigNumber(result);
+
+                $("#balanceOfToken").text(gameToken.toFixed() + "Token");
+            });
+
+        }
+        // 내 보유 아이템
+        function ownerOfItems() {
+
+            $("#my_tokens").empty();
+            ItemFactory.balanceOf(account, (error, result) => {
+                let myBalance;
+
+                if (errorChk("totalSupply", error)) {
+                    myBalance = 0;
+                    return;
+                }
+
+                myBalance = result;
+
+                for (var i = 0; i < myBalance; i++) {
+                    ItemFactory.tokenOfOwnerByIndex(account, i, (error, result) => {
+                        if (errorChk("tokenByIndex 호출 실패", error)) return;
+
+                        new Promise((resolve, reject) => {
+                            resolve($.ajax("./api/items/" + result));
+                        }).then((data)=>{
+                            ItemFactory.itemExtInfo(result, (error, extInfo) => {
+                                console.log(data);
+                                console.log(extInfo);
+                                $("#my_tokens").append(
+                                    createCard({
+                                        data : data,
+                                        extInfo :extInfo
+                                    }, result)
+                                );
+                            });
+                        });
+                    });
+                }
+            });
+        }
+
+        // 선물 주기
+        function sendGiftToFriends(_recipent, _tokenSeq) {
+            return new Promise((resolve, reject) => {
+               ItemFactory.safeTransferFrom.sendTransaction(
+                    account,
+                   _recipent,
+                   BigNumber(_tokenSeq).toFixed(),
+                   {
+                       from : account,
+                       gasPrice : BigNumber($("#gas_price").val()).multipliedBy(500000000)
+                   },
+                   (error, tx)=> {
+                       if(error) console.log(error);
+                       resolve(tx);
+                       var txURl = "https://ropsten.etherscan.io/tx/" + tx;
+                       txLog({
+                           targetEl : "result",
+                           msg : _recipent + " 에게 선물주기 완료 [<a target=\"_blank\" href=\""+txURl+"\">"+tx+"</a>]"
+                       });
+                   }
+
+               );
+            });
+        }
+
+        //판매가격 변경하기
+        function salePriceChange(tokenSeq, price) {
+            return new Promise((resolve, reject) => {
+                ItemFactory.setItemSellingPrice.sendTransaction(
+                    tokenSeq,
+                    price,
+                    {
+                        from : account,
+                        gasPrice : BigNumber($("#gas_price").val()).multipliedBy(500000000)
+                    },
+                    (error, tx)=> {
+                        resolve(tx);
+                        var txURl = "https://ropsten.etherscan.io/tx/" + tx;
+                        txLog({
+                            targetEl : "result",
+                            msg : " 가격 변경 완료 [<a target=\"_blank\" href=\""+txURl+"\">"+tx+"</a>]"
+                        });
+                    }
+                )
+            });
+        }
+
+        //판매 상태 변경
+        function saleStatusChange(tokenSeq, status) {
+            ItemFactory.setItemSellingStatus.sendTransaction(
+                tokenSeq,
+                BigNumber(status).toFixed(),
+                {
+                    from: account,
+                    gasPrice: BigNumber($("#gas_price").val()).multipliedBy(500000000)
+                },
+                (error, tx)=> {
+                    console.log(tx);
+                    var txURl = "https://ropsten.etherscan.io/tx/" + tx;
+                    txLog({
+                        targetEl : "result",
+                        msg : " 판매상태 변경 완료 [<a target=\"_blank\" href=\""+txURl+"\">"+tx+"</a>]"
+                    });
+                }
+            );
+        }
+
+        // 장비 장착 초기화
+        function dataInit() {
+            window.localStorage.equip = JSON.stringify(initObject);
+        }
+
+        // 장비 장착 localStorage 사용 ( DB x )
+        function equip(equipment) {
+            // DB 가 아닌 우선 SessionStorage사용.
+            // 초기화
+            if (window.localStorage.equip == null) {
+                dataInit();
+            }
+
+            let card = document.createElement("div");
+            card.classList.add("card");
+            card.classList.add("w-50");
+            card.classList.add("text-white");
+            card.classList.add("bg-light");
+            card.classList.add("mb-3");
+            card.style = "width: 18rem;";
+
+            // 아이템 사진
+            let img = document.createElement("img");
+            img.classList.add("card-img-top");
+            img.src = equipment.img;
+            img.data = equipment;
+            img.style = "padding:20px;width:200px;height:200px;";
+            img.addEventListener('click', function() {
+                if (window.confirm('해당 무기를 해제하시겠습니까?')){
+                    unEquip(img.data);
+                }
+            }, false);
+
+
+            // 아이템 명, 아이템 속성, 판매상태
+            let cardTag = document.createElement("div");
+            cardTag.style="color:black";
+
+            let cardName = document.createElement("h5");
+            cardName.innerHTML = equipment.name;
+            cardName.classList.add("text-center");
+            cardTag.append(cardName);
+            cardTag.classList.add("text-center");
+
+            let cardAttributes1 = document.createElement('span');
+            let cardAttributes2 = document.createElement('span');
+
+            cardAttributes1.innerHTML = equipment.itemType + " / " + equipment.itemGrade + "</br>";
+            cardAttributes2.innerHTML = " ATTK : " + equipment.ability.attack + " / " + " DEF : " + equipment.ability.defence;
+
+            cardTag.append(cardAttributes1);
+            cardTag.append(cardAttributes2);
+
+            card.append(img);
+            card.append(cardTag);
+
+            if($("#" + equipment.itemType + ":has(img)").length == 1){
+                var prevData = $("#" + equipment.itemType).children()[0].data;
+                Attack-=prevData["ability"].attack;
+                Defence-=prevData["ability"].defence;
+            }
+
+            Attack+=equipment["ability"].attack;
+            Defence+=equipment["ability"].defence;
+            totalAbility();
+
+            $("#" + equipment.itemType).empty();
+            $("#" + equipment.itemType).append(card);
+
+            changeStorage(equipment);
+
+        }
+
+        // 장비 장착 해제 ( DB x )
+        function unEquip(data){
+            $("#" + data.itemType).empty();
+
+            var equip = JSON.parse(window.localStorage.equip);
+
+            Attack-=data["ability"].attack;
+            Defence-=data["ability"].defence;
+            totalAbility();
+
+            equip[data.itemType] = initObject[data.itemType];
+
+            window.localStorage.equip = JSON.stringify(equip);
+
+            $("#" + data.itemType).html(initObject[data.itemType][0]);
+        }
+
+        // 로컬스토리지 변경 Array to JsonString
+        function changeStorage(equipment) {
+            var equip = JSON.parse(window.localStorage.equip);
+
+            equip[equipment.itemType] = [equipment.name, equipment.img, equipment.tokenSeq, equipment.itemGrade, equipment["ability"].attack, equipment["ability"].defence];
+
+            window.localStorage.equip = JSON.stringify(equip);
+            console.log(window.localStorage.equip);
+        }
+
+        // 화면 Refresh Local Storage에서 장비 불러오기
+        function itemPositionSetup() {
+            var equip = JSON.parse(window.localStorage.equip);
+            for (var key in equip) {
+                if (equip.hasOwnProperty(key)) {
+                    var info = equip[key];
+
+                    if (info[1] != "#") {
+
+                        let card = document.createElement("div");
+                        card.classList.add("card");
+                        card.classList.add("w-50");
+                        card.classList.add("text-white");
+                        card.classList.add("bg-light");
+                        card.classList.add("mb-3");
+                        card.style = "width: 18rem;";
+
+                        // 아이템 사진
+                        let img = document.createElement("img");
+                        img.classList.add("card-img-top");
+                        img.src = info[1];
+                        img.data = {
+                            "tokenSeq": info[2],
+                            "itemType": key,
+                            "ability" : {
+                                "attack" : info[4],
+                                "defence" : info[5]
+                            }
+                        };
+                        img.style = "padding:20px;width:200px;height:200px;";
+                        img.addEventListener('click', function() {
+                            if (window.confirm('해당 무기를 해제하시겠습니까?')){
+                                unEquip(img.data);
+                            }
+                        }, false);
+
+                        // 아이템 명, 아이템 속성, 판매상태
+                        let cardTag = document.createElement("div");
+                        cardTag.style="color:black";
+
+                        let cardName = document.createElement("h5");
+                        cardName.innerHTML = info[0];
+                        cardName.classList.add("text-center");
+                        cardTag.append(cardName);
+                        cardTag.classList.add("text-center");
+
+                        let cardAttributes1 = document.createElement('span');
+                        let cardAttributes2 = document.createElement('span');
+
+                        cardAttributes1.innerHTML = key + " / " + info[3] + "</br>";
+                        cardAttributes2.innerHTML = " ATTK : " + info[4] + " / " + " DEF : " + info[5];
+
+                        cardTag.append(cardAttributes1);
+                        cardTag.append(cardAttributes2);
+
+                        card.append(img);
+                        card.append(cardTag);
+
+                        Attack+=info[4];
+                        Defence+=info[5];
+                        totalAbility();
+
+                        $("#" + key).empty();
+                        $("#" + key).append(card);
+
+                    }
+                }
+            }
+        }
+
+        // 공격 방어 Dom Refresh
+        function totalAbility(){
+            $("#attack").text(Attack);
+            $("#defence").text(Defence);
+        }
+
+        // Gas 시장 가격 가져오기
+        function getGasPrice() {
+            return new Promise((resolve, reject) => {
+                $.getJSON('https://ethgasstation.info/json/ethgasAPI.json', (data) => {
+                    resolve(data['safeLow']/10);
+                });
+            });
+        }
+
+        // Item Card 생성
+        function createCard(_option, _tokenId){
+
+            // 아이템 카드 레이아웃
+            let card = document.createElement("div");
+            card.classList.add("col-sm-6");
+            card.classList.add("text-white");
+            card.classList.add("bg-light");
+            card.classList.add("col-md-3");
+            card.style="padding:10px;";
+
+
+            if(_option.data.tokenSeq != -1){
+                // 아이템 사진
+                let img = document.createElement("img");
+                img.classList.add("card-img-top");
+                img.src = _option.data.img;
+                img.data = _option.data;
+                img.style = "padding:20px;width:200px;height:200px;";
+                img.addEventListener('click', function() {
+                    if (window.confirm('해당 무기를 장착하시겠습니까?')){
+                        equip(img.data);
+                    }
+                }, false);
+
+                // 아이템 명, 아이템 속성, 판매상태
+                let cardTag = document.createElement("div");
+                cardTag.style="color:black";
+
+                let cardName = document.createElement("h5");
+                cardName.innerHTML = _option.data.name;
+                cardName.classList.add("text-center");
+                cardTag.append(cardName);
+                cardTag.classList.add("text-center");
+
+                let cardAttributes1 = document.createElement('span');
+                let cardAttributes2 = document.createElement('span');
+
+                cardAttributes1.innerHTML = _option.data.itemType + " / " + _option.data.itemGrade + "</br>";
+                cardAttributes2.innerHTML = " ATTK : " + _option.data.ability.attack + " / " + " DEF : " + _option.data.ability.defence;
+
+                cardTag.append(cardAttributes1);
+                cardTag.append(cardAttributes2);
+
+                let sellingStatus = document.createElement('a');
+                sellingStatus.action = _option.extInfo[0];
+                sellingStatus.tokenSeq = _tokenId;
+                sellingStatus.href = "#";
+
+                let badge = document.createElement('span');
+                badge.classList.add("badge");
+                sellingStatus.addEventListener('click', ()=>{
+                   if(confirm("[판매상태] 를 변경하시겠습니까")){
+
+                       if(sellingStatus.action == 1){
+                           sellingStatus.action = 0;
+                           badge.classList.add("badge-primary");
+                           badge.innerHTML = "Sale";
+                       }else{
+                           sellingStatus.action = 1;
+                           badge.classList.add("badge-success");
+                           badge.innerHTML = "Not Sale";
+                       }
+
+                       $(sellingStatus).append(badge);
+                       saleStatusChange(sellingStatus.tokenSeq, sellingStatus.action);
+                   }
+                });
+                if(sellingStatus.action == 1){
+                    badge.classList.add("badge-primary");
+                    badge.innerHTML = "Not Sale";
+                }else{
+                    badge.classList.add("badge-success");
+                    badge.innerHTML = "Sale";
+                }
+                sellingStatus.appendChild(badge);
+
+
+                //부가 정보 입력 (아이템 가격 , 아이템 받는 사람 address 주소)
+                let extInfoArea = document.createElement('ul');
+                extInfoArea.classList.add('list-group');
+                extInfoArea.classList.add('list-group-flush');
+
+                let extInfoPrice = document.createElement('li');
+                extInfoPrice.classList.add('list-group-item');
+
+                let inputPriceDiv = document.createElement('div');
+                inputPriceDiv.classList.add('input-group');
+                inputPriceDiv.classList.add('mb-3');
+
+                let inputPriceLabelText = document.createElement('span');
+                inputPriceLabelText.classList.add('input-group-text');
+                inputPriceLabelText.innerHTML = '판매가격';
+
+                let inputPrice = document.createElement('input');
+                inputPrice.type = "string";
+                inputPrice.value = _option.extInfo[1];
+
+                let priceChangeBtn = document.createElement('button');
+                priceChangeBtn.classList.add('btn');
+                priceChangeBtn.classList.add('btn-outline-info');
+                priceChangeBtn.action = _option.extInfo[0];
+                priceChangeBtn.tokenSeq = _tokenId;
+                priceChangeBtn.appendChild(document.createTextNode("판매가 변경"));
+                priceChangeBtn.addEventListener('click', ()=> {
+                   salePriceChange(
+                       priceChangeBtn.tokenSeq,
+                       $(priceChangeBtn).prev().val()
+                   ).then((tx)=>{
+                       if(tx) console.log(tx);
+                   })
+                });
+
+                inputPriceDiv.append(inputPriceLabelText);
+                inputPriceDiv.append(inputPrice);
+                inputPriceDiv.append(priceChangeBtn);
+                extInfoPrice.append(inputPriceDiv);
+
+                let extInfoReceipent = document.createElement('li');
+                extInfoReceipent.classList.add('list-group-item');
+
+                let inputReceipentDiv = document.createElement('div');
+                inputReceipentDiv.classList.add('input-group');
+                inputReceipentDiv.classList.add('mb-3');
+
+                let inputReceipentLabelText = document.createElement('span');
+                inputReceipentLabelText.classList.add('input-group-text');
+                inputReceipentLabelText.innerHTML = '받는사람';
+
+                let inputReceipent = document.createElement('input');
+                inputPrice.type = "string";
+
+                let giftBtn = document.createElement('button');
+                giftBtn.classList.add('btn');
+                giftBtn.classList.add('btn-outline-warning');
+                giftBtn.action = _option.extInfo[0];
+                giftBtn.tokenSeq = _tokenId;
+                giftBtn.appendChild(document.createTextNode("선물보내기"));
+                giftBtn.addEventListener('click', ()=> {
+                    sendGiftToFriends(
+                        $(giftBtn).prev().val(),
+                        giftBtn.tokenSeq
+                    ).then((tx)=>{
+                        if(tx) console.log(tx);
+                    })
+                });
+
+                inputReceipentDiv.append(inputReceipentLabelText);
+                inputReceipentDiv.append(inputReceipent);
+                inputReceipentDiv.append(giftBtn);
+                extInfoReceipent.append(inputReceipentDiv);
+
+                extInfoArea.append(extInfoPrice);
+                extInfoArea.append(extInfoReceipent);
+
+                card.append(sellingStatus);
+                card.append(img);
+                card.append(cardTag);
+                card.append(extInfoArea);
+
+                console.log($("#my_tokens").find(".card").length);
+
+
+            }else {
+                let warnedMsg = document.createTextNode("Toeken Id : " + _tokenId.result + " did not mapped with resources ");
+                card.append(warnedMsg);
+            }
+
+            return card;
+        }
+    </script>
+</head>
+<body>
+<!-- 사용자 프로파일 -->
+<div class="card media border p-3">
+    <div class="media-body">
+        <h4>
+            <img id="profileImg"  class="mr-3 mt-3 rounded-circle" style="width:60px;">
+            <span id="nick_name"></span>
+            <a href="./login">
+                <button type="button" class="btn btn-outline-secondary">로그아웃</button>
+            </a>
+        </h4>
+        <p>어카운트 정보 : <span id="account"></span></p>
+        <p>보유 Ether : <span id="balanceOf"></span>
+            <a href="https://faucet.metamask.io/">
+                <button type="button" class="btn btn-outline-primary">이더구입하기</button>
+            </a>
+        </p>
+        <p>보유 토큰 : <span id="balanceOfToken"></span>
+            <a href="./tradeToken">
+                <button type="button" class="btn btn-outline-dark">토큰거래하기</button>
+            </a>
+        </p>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">현재 시장가 Gas(gWei)</span>
+            </div>
+            <input type="string" class="form-control" id="gas_price" readonly>
+            <div class="input-group-append">
+                <span class="input-group-text">.0</span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card border p-3">
+    <span>
+        <h4>보유티켓목록
+            <a href="/marketPlace">
+                <button type="button" class="btn btn-warning">
+                    티켓사러가기
+                </button>
+            </a>
+        </h4>
+    </span>
+    <div id="my_tokens" class="row"></div>
+</div>
+
+<div class="card border p-3">
+    <h4>로그</h4>
+    <div id="result" />
+</div>
+</body>
+</html>
